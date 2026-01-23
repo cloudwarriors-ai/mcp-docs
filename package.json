@@ -1,0 +1,47 @@
+{
+  "name": "@cloudwarriors-ai/mcp-docs",
+  "version": "0.1.0",
+  "description": "MCP server providing documentation and discovery for CloudWarriors packages",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "mcp-docs": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "data"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "claude",
+    "documentation",
+    "cloudwarriors"
+  ],
+  "author": "CloudWarriors AI",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  }
+}
