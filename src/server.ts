@@ -112,7 +112,7 @@ export function createServer(): Server {
     try {
       switch (name) {
         case 'list_packages': {
-          const result = listPackages();
+          const result = await listPackages();
           return {
             content: [
               {
@@ -136,7 +136,7 @@ export function createServer(): Server {
               isError: true,
             };
           }
-          const result = getPackageDetails(parsed.data);
+          const result = await getPackageDetails(parsed.data);
           return {
             content: [
               {
@@ -160,7 +160,7 @@ export function createServer(): Server {
               isError: true,
             };
           }
-          const result = searchPackages(parsed.data);
+          const result = await searchPackages(parsed.data);
           return {
             content: [
               {

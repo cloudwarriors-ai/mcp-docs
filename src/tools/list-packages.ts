@@ -2,6 +2,7 @@
  * list_packages tool
  *
  * Lists all available CloudWarriors packages.
+ * Dynamically discovers packages from npm registry.
  */
 
 import { z } from 'zod';
@@ -25,13 +26,14 @@ export interface ListPackagesResult {
 
 /**
  * List all available packages with summary info
+ * Includes dynamically discovered packages from npm
  */
-export function listPackages(): ListPackagesResult {
-  const names = listPackageNames();
+export async function listPackages(): Promise<ListPackagesResult> {
+  const names = await listPackageNames();
   const packages: PackageSummary[] = [];
 
   for (const name of names) {
-    const pkg = getPackage(name);
+    const pkg = await getPackage(name);
     if (pkg) {
       packages.push({
         name: pkg.name,

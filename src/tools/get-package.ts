@@ -2,6 +2,7 @@
  * get_package tool
  *
  * Gets detailed information about a specific package.
+ * Supports dynamic discovery from npm registry.
  */
 
 import { z } from 'zod';
@@ -22,8 +23,9 @@ export interface GetPackageResult {
 
 /**
  * Get detailed information about a package
+ * Includes dynamically discovered packages from npm
  */
-export function getPackageDetails(input: GetPackageInput): GetPackageResult {
+export async function getPackageDetails(input: GetPackageInput): Promise<GetPackageResult> {
   let { name } = input;
 
   // Handle shorthand names (e.g., "rlm" -> "@cloudwarriors-ai/rlm")
@@ -31,7 +33,7 @@ export function getPackageDetails(input: GetPackageInput): GetPackageResult {
     name = `@cloudwarriors-ai/${name}`;
   }
 
-  const pkg = getPackageFromRegistry(name);
+  const pkg = await getPackageFromRegistry(name);
 
   if (!pkg) {
     return {

@@ -2,11 +2,12 @@
  * search_packages tool
  *
  * Searches packages and patterns by keyword or capability.
+ * Includes dynamically discovered packages from npm.
  */
 
 import { z } from 'zod';
 import { search, searchByCapability } from '../data/registry.js';
-import type { SearchResult, Package } from '../domain/types.js';
+import type { SearchResult } from '../domain/types.js';
 
 export const searchPackagesSchema = z.object({
   query: z.string().optional().describe('Search query (keywords to find in name, description, capabilities)'),
@@ -27,13 +28,14 @@ export interface SearchPackagesResult {
 
 /**
  * Search packages and patterns
+ * Includes dynamically discovered packages from npm
  */
-export function searchPackages(input: SearchPackagesInput): SearchPackagesResult {
+export async function searchPackages(input: SearchPackagesInput): Promise<SearchPackagesResult> {
   const { query, capability } = input;
 
   // If capability is specified, search by capability
   if (capability) {
-    const packages = searchByCapability(capability);
+    const packages = await searchByCapability(capability);
     return {
       count: packages.length,
       results: packages.map(pkg => ({
@@ -52,7 +54,7 @@ export function searchPackages(input: SearchPackagesInput): SearchPackagesResult
 
   // If query is specified, do full-text search
   if (query) {
-    const results = search(query);
+    const results = await search(query);
     return {
       count: results.length,
       results,
